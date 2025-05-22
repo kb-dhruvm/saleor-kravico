@@ -2,6 +2,21 @@ fragment VariantDetails on ProductVariant {
 	id
 	name
 	quantityAvailable
+	media {
+		url
+		alt
+	}
+	attributes {
+		values {
+			slug
+			name
+			value
+		}
+		attribute {
+			name
+			slug
+		}
+	}
 	pricing {
 		price {
 			gross {
