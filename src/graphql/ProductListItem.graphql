@@ -18,6 +18,21 @@ fragment ProductListItem on Product {
 			}
 		}
 	}
+	attributes {
+		attribute {
+			name
+			slug
+		}
+		values {
+			slug
+			name
+			reference
+			inputType
+			file {
+				url
+			}
+		}
+	}
 	category {
 		id
 		name

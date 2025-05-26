@@ -1,0 +1,21 @@
+query ProductFilters {
+	attributes(
+		first: 15
+		filter: { slugs: ["carat", "color", "gender", "karat", "metal", "shape", "styles"] }
+	) {
+		edges {
+			node {
+				name
+				slug
+				choices(first: 20) {
+					edges {
+						node {
+							name
+							slug
+						}
+					}
+				}
+			}
+		}
+	}
+}

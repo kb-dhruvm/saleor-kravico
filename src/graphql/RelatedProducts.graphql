@@ -1,0 +1,41 @@
+query RelatedProducts($ids: [ID!], $channel: String!, $first: Int!) {
+	products(where: { ids: $ids }, channel: $channel, first: $first) {
+		edges {
+			node {
+				name
+				slug
+				pricing {
+					priceRange {
+						start {
+							gross {
+								amount
+								currency
+							}
+						}
+						stop {
+							gross {
+								amount
+								currency
+							}
+						}
+					}
+				}
+				attributes {
+					attribute {
+						entityType
+						slug
+					}
+					values {
+						slug
+						name
+						reference
+						inputType
+						file {
+							url
+						}
+					}
+				}
+			}
+		}
+	}
+}

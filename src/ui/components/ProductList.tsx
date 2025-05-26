@@ -10,7 +10,7 @@ export const ProductList = ({ products }: { products: readonly ProductListItemFr
 		>
 			{products.map((product, index) => (
 				<ProductElement
-					key={product.id}
+					key={index}
 					product={product}
 					priority={index < 2}
 					loading={index < 3 ? "eager" : "lazy"}
