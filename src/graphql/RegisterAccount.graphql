@@ -1,0 +1,33 @@
+mutation AccountRegister(
+	$firstName: String
+	$lastName: String
+	$email: String!
+	$password: String!
+	$channel: String
+	$redirectUrl: String!
+) {
+	accountRegister(
+		input: {
+			firstName: $firstName
+			lastName: $lastName
+			email: $email
+			password: $password
+			channel: $channel
+			languageCode: EN
+			redirectUrl: $redirectUrl
+		}
+	) {
+		errors {
+			field
+			message
+			addressType
+			code
+		}
+		user {
+			id
+			firstName
+			lastName
+			email
+		}
+	}
+}

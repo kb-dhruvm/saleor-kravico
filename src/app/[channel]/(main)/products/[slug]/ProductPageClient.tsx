@@ -9,6 +9,7 @@ import { formatMoney, formatMoneyRange } from "@/lib/utils";
 import { AvailabilityMessage } from "@/ui/components/AvailabilityMessage";
 import { type RelatedProductsQuery } from "@/gql/graphql";
 import { ProductList } from "@/ui/components/ProductList";
+import { WishlistButton } from "@/ui/components/WishlistButton";
 const parser = edjsHTML();
 
 export default function ProductPageClient({
@@ -19,7 +20,7 @@ export default function ProductPageClient({
 }: {
 	product: any;
 	channel: string;
-	addItemAction: (formData: FormData) => Promise<void>;
+	addItemAction: (id: string, channel: string, size: string) => Promise<void>;
 	relatedProducts: RelatedProductsQuery["products"];
 }) {
 	const variants = product.variants || [];
@@ -88,9 +89,7 @@ export default function ProductPageClient({
 						__html: JSON.stringify(productJsonLd),
 					}}
 				/>
-				<form className="grid gap-2 sm:grid-cols-2 lg:grid-cols-8" action={addItemAction}>
-					<input type="hidden" name="selectedVariantID" value={selectedVariantID || ""} />
-					<input type="hidden" name="channel" value={channel} />
+				<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-8">
 					<div className="md:col-span-1 lg:col-span-5">
 						{mediaImages.length > 0 && <EmblaCarouselWithThumbs slides={mediaImages} />}
 					</div>
@@ -99,6 +98,7 @@ export default function ProductPageClient({
 							<h1 className="mb-4 flex-auto text-3xl font-medium tracking-tight text-neutral-900">
 								{product?.name}
 							</h1>
+							<WishlistButton productId={product.id} channel={channel} />
 							<p className="mb-8 text-2xl font-medium" data-testid="ProductElement_Price">
 								{price}
 							</p>
@@ -113,7 +113,15 @@ export default function ProductPageClient({
 							)}
 							<AvailabilityMessage isAvailable={isAvailable} />
 							<div className="mt-8">
-								<AddButton disabled={!selectedVariantID || !selectedVariant?.quantityAvailable} />
+								<AddButton
+									onClick={(e) => {
+										if (!(!selectedVariantID || !selectedVariant?.quantityAvailable)) {
+											e.preventDefault();
+											addItemAction(selectedVariantID, channel, selectedVariant?.size || 3);
+										}
+									}}
+									disabled={!selectedVariantID || !selectedVariant?.quantityAvailable}
+								/>
 							</div>
 							{description && (
 								<div className="mt-8 space-y-6 text-sm text-neutral-500">
@@ -124,12 +132,12 @@ export default function ProductPageClient({
 							)}
 						</div>
 					</div>
-				</form>
+				</div>
 			</section>
 			<section className="mx-auto max-w-7xl p-8">
 				<h2 className="mb-6 text-2xl font-semibold text-neutral-900">Related Products</h2>
 				{relatedProducts && relatedProducts.edges && relatedProducts.edges.length > 0 ? (
-					<ProductList products={relatedProducts.edges.map((e: any) => e.node)} />
+					<ProductList products={relatedProducts.edges.map((e: any) => e.node)} channel={channel} />
 				) : (
 					<p className="text-neutral-500">No related products found.</p>
 				)}

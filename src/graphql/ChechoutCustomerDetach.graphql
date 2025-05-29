@@ -1,0 +1,7 @@
+mutation CheckoutCustomerDetach($id: ID) {
+	checkoutCustomerDetach(id: $id) {
+		checkout {
+			id
+		}
+	}
+}

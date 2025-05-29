@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 
-export function LoginForm(props: { channel: string }) {
+export function RegisterForm() {
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -12,15 +14,15 @@ export function LoginForm(props: { channel: string }) {
 		setLoading(true);
 		setError(null);
 		try {
-			const res = await fetch("/api/auth/login", {
+			const res = await fetch("/api/auth/register", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, password, channel: props.channel }),
+				body: JSON.stringify({ firstName, lastName, email, password }),
 			});
-			const data = await res.json();
-			if (!res.ok) throw new Error(data.message || "Login failed");
+			const data: any = await res.json();
+			if (!res.ok) throw new Error(data.message || "Registration failed");
 			// Optionally redirect or show success
-			window.location.href = data.redirectUrl || `/${props.channel}`;
+			window.location.href = data.redirectUrl || "/verify";
 		} catch (err: any) {
 			setError(err.message);
 		} finally {
@@ -31,6 +33,32 @@ export function LoginForm(props: { channel: string }) {
 	return (
 		<div className="mx-auto mt-16 w-full max-w-lg">
 			<form className="rounded border p-8 shadow-md" onSubmit={handleSubmit}>
+				<div className="mb-2">
+					<label className="sr-only" htmlFor="firstName">
+						First Name
+					</label>
+					<input
+						type="text"
+						name="firstName"
+						placeholder="First Name"
+						className="w-full rounded border bg-neutral-50 px-4 py-2"
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)}
+					/>
+				</div>
+				<div className="mb-2">
+					<label className="sr-only" htmlFor="lastName">
+						Last Name
+					</label>
+					<input
+						type="text"
+						name="lastName"
+						placeholder="Last Name"
+						className="w-full rounded border bg-neutral-50 px-4 py-2"
+						value={lastName}
+						onChange={(e) => setLastName(e.target.value)}
+					/>
+				</div>
 				<div className="mb-2">
 					<label className="sr-only" htmlFor="email">
 						Email
@@ -65,10 +93,9 @@ export function LoginForm(props: { channel: string }) {
 					type="submit"
 					disabled={loading}
 				>
-					{loading ? "Logging in..." : "Log In"}
+					{loading ? "Registering..." : "Register"}
 				</button>
 			</form>
-			<div></div>
 		</div>
 	);
 }

@@ -5,16 +5,22 @@ import { ProductImageWrapper } from "@/ui/atoms/ProductImageWrapper";
 import type { ProductListItemFragment } from "@/gql/graphql";
 import { formatMoneyRange } from "@/lib/utils";
 import { useState } from "react";
+import { WishlistButton } from "./WishlistButton";
 
 export function ProductElement({
 	product,
 	loading,
 	priority,
-}: { product: ProductListItemFragment } & { loading: "eager" | "lazy"; priority?: boolean }) {
+	channel,
+}: { product: ProductListItemFragment } & {
+	loading: "eager" | "lazy";
+	priority?: boolean;
+	channel: string;
+}) {
 	const [hovered, setHovered] = useState(false);
 
 	return (
-		<li data-testid="ProductElement">
+		<li data-testid="ProductElement" className="relative">
 			<LinkWithChannel href={`/products/${product.slug}`} key={product.id}>
 				<div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
 					{!hovered &&
@@ -100,6 +106,9 @@ export function ProductElement({
 					</div>
 				</div>
 			</LinkWithChannel>
+			<div className="absolute right-2 top-2 z-10">
+				<WishlistButton productId={product.id} channel={channel} />
+			</div>
 		</li>
 	);
 }

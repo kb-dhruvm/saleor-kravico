@@ -36,7 +36,7 @@ export default async function Page(props: { params: Promise<{ slug: string; chan
 	return (
 		<div className="mx-auto max-w-7xl p-8 pb-16">
 			<h1 className="pb-8 text-xl font-semibold">{name}</h1>
-			<ProductList products={products.edges.map((e) => e.node)} />
+			<ProductList products={products.edges.map((e) => e.node)} channel={params.channel} />
 		</div>
 	);
 }

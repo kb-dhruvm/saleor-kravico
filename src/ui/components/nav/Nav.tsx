@@ -4,6 +4,7 @@ import { CartNavItem } from "./components/CartNavItem";
 import { NavLinks } from "./components/NavLinks";
 import { MobileMenu } from "./components/MobileMenu";
 import { SearchBar } from "./components/SearchBar";
+import Link from "next/link";
 
 export const Nav = ({ channel }: { channel: string }) => {
 	return (
@@ -23,6 +24,9 @@ export const Nav = ({ channel }: { channel: string }) => {
 				<Suspense fallback={<div className="w-6" />}>
 					<CartNavItem channel={channel} />
 				</Suspense>
+				<Link href={`/${channel}/wishlist`} className="ml-4 text-xl" title="Wishlist">
+					Wishlist
+				</Link>
 			</div>
 			<Suspense>
 				<MobileMenu>

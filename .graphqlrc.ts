@@ -40,6 +40,7 @@ const config: CodegenConfig = {
 					Metadata: "Record<string, string>",
 					Minute: "number",
 					PositiveDecimal: "number",
+					Hour: "number",
 					UUID: "string",
 					Upload: "unknown",
 					WeightScalar: "unknown",

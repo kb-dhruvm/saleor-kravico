@@ -1,0 +1,13 @@
+query MyWishlist {
+	wishlistItems(first: 20) {
+		totalCount
+		edges {
+			node {
+				id
+				product {
+					...ProductListItem
+				}
+			}
+		}
+	}
+}

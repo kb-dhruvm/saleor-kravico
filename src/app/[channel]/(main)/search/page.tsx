@@ -56,7 +56,7 @@ export default async function Page(props: {
 			{products.totalCount && products.totalCount > 0 ? (
 				<div>
 					<h1 className="pb-8 text-xl font-semibold">Search results for &quot;{searchValue}&quot;:</h1>
-					<ProductList products={products.edges.map((e) => e.node)} />
+					<ProductList products={products.edges.map((e) => e.node)} channel={params.channel} />
 					<Pagination
 						pageInfo={{
 							...products.pageInfo,

@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@adyen/adyen-web": "5.53.3",
 		"@adyen/api-library": "15.0.0-beta",
+		"@apollo/client": "3.13.8",
 		"@headlessui/react": "1.7.18",
 		"@saleor/auth-sdk": "1.0.2",
 		"@stripe/react-stripe-js": "2.6.2",

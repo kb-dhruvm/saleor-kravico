@@ -4,6 +4,8 @@ import { DeleteLineButton } from "./DeleteLineButton";
 import * as Checkout from "@/lib/checkout";
 import { formatMoney, getHrefForVariant } from "@/lib/utils";
 import { LinkWithChannel } from "@/ui/atoms/LinkWithChannel";
+import { executeGraphQL } from "@/lib/graphql";
+import { CheckoutCustomerDetachDocument } from "@/gql/graphql";
 
 export const metadata = {
 	title: "Shopping Cart · Saleor Storefront example",
@@ -15,7 +17,26 @@ export default async function Page(props: { params: Promise<{ channel: string }>
 
 	const checkout = await Checkout.find(checkoutId);
 
+	console.log(checkout, checkoutId);
+
 	if (!checkout || checkout.lines.length < 1) {
+		const user = await Checkout.getCurrentUser();
+
+		if (user) {
+			try {
+				await executeGraphQL(CheckoutCustomerDetachDocument, {
+					variables: {
+						id: checkoutId,
+					},
+					cache: "no-cache",
+				});
+
+				await Checkout.removeIdFromCookie();
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
 		return (
 			<section className="mx-auto max-w-7xl p-8">
 				<h1 className="mt-8 text-3xl font-bold text-neutral-900">Your Shopping Cart is empty</h1>

@@ -7,7 +7,6 @@ import { ProductImageWrapper } from "../atoms/ProductImageWrapper";
 export default function EmblaCarouselWithThumbs({ slides }: { slides: { url: string; alt?: string }[] }) {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-	const [thumbsApi, setThumbsApi] = useState<any>(null);
 	const thumbsRef = useRef<HTMLDivElement>(null);
 
 	// Sync main carousel with thumbnail clicks

@@ -3,6 +3,16 @@ fragment UserDetails on User {
 	email
 	firstName
 	lastName
+	checkouts(first: 10) {
+		edges {
+			node {
+				id
+				channel {
+					slug
+				}
+			}
+		}
+	}
 	avatar {
 		url
 		alt

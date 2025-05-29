@@ -16,7 +16,7 @@ export function VariantSelector({
 	channel: string;
 	onSelectVariant?: (variant: VariantDetailsFragment) => void;
 }) {
-	if (!selectedVariant && variants.length === 1 && variants[0]?.quantityAvailable && !onSelectVariant) {
+	if (!selectedVariant && variants.length === 1 && variants[0]?.quantityAvailable) {
 		redirect("/" + channel + getHrefForVariant({ productSlug: product.slug, variantId: variants[0].id }));
 	}
 

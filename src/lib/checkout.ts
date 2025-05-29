@@ -1,5 +1,10 @@
 import { cookies } from "next/headers";
-import { CheckoutCreateDocument, CheckoutFindDocument } from "@/gql/graphql";
+import {
+	CheckoutCreateDocument,
+	CheckoutFindDocument,
+	CurrentUserDocument,
+	CheckoutCustomerAttachDocument,
+} from "@/gql/graphql";
 import { executeGraphQL } from "@/lib/graphql";
 
 export async function getIdFromCookies(channel: string) {
@@ -43,5 +48,41 @@ export async function findOrCreate({ channel, checkoutId }: { checkoutId?: strin
 	return checkout || (await create({ channel })).checkoutCreate?.checkout;
 }
 
-export const create = ({ channel }: { channel: string }) =>
-	executeGraphQL(CheckoutCreateDocument, { cache: "no-cache", variables: { channel } });
+export async function getCurrentUser() {
+	try {
+		const data = await executeGraphQL(CurrentUserDocument, { cache: "no-cache" });
+		return data?.me;
+	} catch {
+		return null;
+	}
+}
+
+export const create = async ({ channel }: { channel: string }) => {
+	// Create the checkout
+	const checkoutCreateResult = await executeGraphQL(CheckoutCreateDocument, {
+		cache: "no-cache",
+		variables: { channel },
+	});
+	const checkout = checkoutCreateResult?.checkoutCreate?.checkout;
+	if (!checkout) return checkoutCreateResult;
+
+	return checkoutCreateResult;
+};
+
+export const removeIdFromCookie = async () => {
+	const allCookies = (await cookies()).getAll();
+	for (const cookie of allCookies) {
+		if (cookie.name.startsWith("checkoutId-")) {
+			(await cookies()).delete(cookie.name);
+		}
+	}
+};
+
+export const attachCheckoutToCurrentUser = async (checkoutId: string, userId?: string) => {
+	if (!userId) return;
+	// Attach the checkout to the user
+	await executeGraphQL(CheckoutCustomerAttachDocument, {
+		cache: "no-cache",
+		variables: { id: checkoutId, customerId: userId },
+	});
+};
