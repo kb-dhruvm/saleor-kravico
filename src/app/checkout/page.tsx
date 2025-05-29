@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { invariant } from "ts-invariant";
 import { RootWrapper } from "./pageWrapper";
+import Image from "next/image";
 
 export const metadata = {
 	title: "Checkout · Saleor Storefront example",
@@ -21,7 +22,7 @@ export default async function CheckoutPage(props: {
 			<section className="mx-auto flex min-h-dvh max-w-7xl flex-col p-8">
 				<div className="flex items-center font-bold">
 					<Link aria-label="homepage" href="/">
-						ACME
+						<Image src="/logo.png" alt="logo" width={100} height={100} className="h-fit w-fit" />
 					</Link>
 				</div>
 				<h1 className="mt-8 text-3xl font-bold text-neutral-900">Checkout</h1>

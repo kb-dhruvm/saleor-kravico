@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
 	try {
 		const body: any = await req.json();
 		const { firstName, lastName, email, password } = body;
-		const channel = body.channel || "default-channel";
+		const channel = body.channel || "online-inr";
 		const redirectUrl = process.env.NEXT_PUBLIC_STOREFRONT_URL + "/verify";
 
 		if (!email || !password) {
