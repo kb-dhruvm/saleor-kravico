@@ -49,6 +49,8 @@ export const StripeComponent = () => {
 		[stripeData],
 	);
 
+	console.log("stripeData", stripeData, stripePromise);
+
 	if (!stripePromise || !stripeData) {
 		return null;
 	}
