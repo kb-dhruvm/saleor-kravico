@@ -107,7 +107,7 @@ export function ProductElement({
 				</div>
 			</LinkWithChannel>
 			<div className="absolute right-2 top-2 z-10">
-				<WishlistButton productId={product.id} channel={channel} />
+				<WishlistButton productId={product.id} channel={channel} wishlistId={product.wishlistId} />
 			</div>
 		</li>
 	);

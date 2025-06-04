@@ -4,6 +4,7 @@ query RelatedProducts($ids: [ID!], $channel: String!, $first: Int!) {
 			node {
 				name
 				slug
+				wishlistId
 				pricing {
 					priceRange {
 						start {

@@ -11,7 +11,7 @@ import { useAlerts } from "@/checkout/hooks/useAlerts";
 import { useErrorMessages } from "@/checkout/hooks/useErrorMessages";
 import { useCheckout } from "@/checkout/hooks/useCheckout";
 
-export const StripeComponent = () => {
+export const StripeComponent = ({ config }: { config: { data: { stripePublishableKey: string } } }) => {
 	const { checkout } = useCheckout();
 
 	const [transactionInitializeResult, transactionInitialize] = useTransactionInitializeMutation();
@@ -19,7 +19,7 @@ export const StripeComponent = () => {
 		| undefined
 		| {
 				paymentIntent: {
-					client_secret: string;
+					stripeClientSecret: string;
 				};
 				publishableKey: string;
 		  };
@@ -33,8 +33,8 @@ export const StripeComponent = () => {
 			paymentGateway: {
 				id: stripeGatewayId,
 				data: {
-					automatic_payment_methods: {
-						enabled: true,
+					paymentIntent: {
+						paymentMethod: "card",
 					},
 				},
 			},
@@ -45,19 +45,17 @@ export const StripeComponent = () => {
 	}, [checkout.id, commonErrorMessages.somethingWentWrong, showCustomErrors, transactionInitialize]);
 
 	const stripePromise = useMemo(
-		() => stripeData?.publishableKey && loadStripe(stripeData.publishableKey),
-		[stripeData],
+		() => loadStripe(config.data.stripePublishableKey),
+		[config.data.stripePublishableKey],
 	);
 
-	console.log("stripeData", stripeData, stripePromise);
-
-	if (!stripePromise || !stripeData) {
+	if (!stripePromise || !config.data.stripePublishableKey || !stripeData) {
 		return null;
 	}
 
 	return (
 		<Elements
-			options={{ clientSecret: stripeData.paymentIntent.client_secret, appearance: { theme: "stripe" } }}
+			options={{ clientSecret: stripeData.paymentIntent.stripeClientSecret, appearance: { theme: "stripe" } }}
 			stripe={stripePromise}
 		>
 			<CheckoutForm />

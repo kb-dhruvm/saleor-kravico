@@ -7,12 +7,12 @@ export async function POST(req: NextRequest) {
 		const body: any = await req.json();
 		const { wishlistId } = body;
 
-		const { removeFromWishlist } = await executeGraphQL(RemoveFromWishlistDocument, {
+		await executeGraphQL(RemoveFromWishlistDocument, {
 			variables: { wishlistId },
 			cache: "no-store",
 		});
 
-		return NextResponse.json({ data: removeFromWishlist }, { status: 200 });
+		return NextResponse.json({ removeFromWishlist: { ok: true } }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: error }, { status: 500 });
 	}

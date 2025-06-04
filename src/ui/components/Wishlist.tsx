@@ -1,29 +1,38 @@
 "use client";
 import { MyWishlistQuery } from "@/gql/graphql";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
 
 export default function Wishlist({ channel }: { channel: string }) {
 	const [wishlist, setWishlist] = useState<MyWishlistQuery["wishlistItems"] | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 
 	const handleRemove = async (wishlistId: string) => {
-		await fetch("/api/wishlist/remove", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ wishlistId }),
-		});
+		try {
+			await fetch("/api/wishlist/remove", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ wishlistId }),
+			});
+			router.refresh();
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const getWishlist = async () => {
 		try {
+			setLoading(true);
 			const res = await fetch("/api/wishlist/list");
 			const data = (await res.json()) as { wishlistItems: MyWishlistQuery["wishlistItems"] };
 			setWishlist(data.wishlistItems);
-			setLoading(false);
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 

@@ -98,7 +98,7 @@ export default function ProductPageClient({
 							<h1 className="mb-4 flex-auto text-3xl font-medium tracking-tight text-neutral-900">
 								{product?.name}
 							</h1>
-							<WishlistButton productId={product.id} channel={channel} />
+							<WishlistButton productId={product.id} channel={channel} wishlistId={product.wishlistId} />
 							<p className="mb-8 text-2xl font-medium" data-testid="ProductElement_Price">
 								{price}
 							</p>

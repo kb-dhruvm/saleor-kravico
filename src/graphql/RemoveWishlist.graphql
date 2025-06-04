@@ -1,9 +1,5 @@
 mutation RemoveFromWishlist($wishlistId: ID!) {
 	removeFromWishlist(wishlistId: $wishlistId) {
-		errors {
-			field
-			message
-			code
-		}
+		ok
 	}
 }

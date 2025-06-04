@@ -3,6 +3,7 @@ query ProductDetails($slug: String!, $channel: String!) {
 		id
 		name
 		slug
+		wishlistId
 		description
 		seoTitle
 		seoDescription

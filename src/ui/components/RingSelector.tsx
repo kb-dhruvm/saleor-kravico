@@ -99,7 +99,7 @@ const RingSelector = ({
 			</div>
 
 			{/* Ring Size Section */}
-			<div>
+			{/* <div>
 				<div className="mb-1 text-sm font-semibold">RING SIZE</div>
 				<div className="flex items-center gap-4">
 					<select
@@ -118,7 +118,7 @@ const RingSelector = ({
 						FIND RING SIZE
 					</a>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 };
